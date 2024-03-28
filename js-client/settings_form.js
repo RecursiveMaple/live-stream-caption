@@ -1,4 +1,4 @@
-settingsForm = `
+var settingsForm = `
 <form id="settings-form">
     <div id="asr-settings">
     <h2>--------asr setting--------</h2>
@@ -141,4 +141,38 @@ function writeSettingsForm(dict) {
             element.value = dict['server'][element.id];
         }
     }
+}
+
+function addSettingsFormElement() {
+    let form = document.createElement('div');
+    form.id = 'settings-form';
+    form.innerHTML = settingsForm;
+    form.style.position = 'fixed';
+    form.style.right = '0px';
+    form.style.top = '50%';
+    form.style.transform = 'translateY(-50%)';
+    form.style.zIndex = '100';
+    form.style.display = 'none';
+    // add close button
+    let closeButton = document.createElement('button');
+    closeButton.textContent = 'Close';
+    closeButton.style.position = 'absolute';
+    closeButton.style.right = '0px';
+    closeButton.style.top = '0px';
+    closeButton.addEventListener('click', function () {
+        form.style.display = 'none';
+    });
+    form.appendChild(closeButton);
+    form.addEventListener('blur', function () {
+        form.style.display = 'none';
+    }, true);
+    document.body.appendChild(form);
+}
+
+function showSettingsForm() {
+    let form = document.getElementById('settings-form');
+    if (!form) {
+        addSettingsFormElement()
+    }
+    form.style.display = 'block';
 }

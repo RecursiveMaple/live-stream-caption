@@ -27,10 +27,7 @@ function main() {
     'use strict';
 
     // 添加一个菜单项
-    GM_registerMenuCommand('Settings', function () {
-        // 在点击菜单项时打开一个新的窗口
-        console.log('Settings clicked');
-    });
+    GM_registerMenuCommand('Settings', showSettingsForm);
 
     var maxRetry = 30;
     var elemSearchCount = 0;
