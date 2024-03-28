@@ -7,7 +7,9 @@
 // @match        https://www.twitch.tv/*
 // @match        https://live.bilibili.com/*
 // @icon         https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/icon.png
-// @require      https://cdn.staticfile.org/jquery/3.6.3/jquery.min.js
+// @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/get_video_element.js
+// @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/subtitle.js
+// @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/settings_form.js
 // @grant        GM_registerMenuCommand
 // @grant        GM_openInTab
 // ==/UserScript==
@@ -27,7 +29,7 @@ function main() {
     // 添加一个菜单项
     GM_registerMenuCommand('Settings', function () {
         // 在点击菜单项时打开一个新的窗口
-        GM_openInTab('https://your-website.com/settings.html', { active: true });
+        console.log('Settings clicked');
     });
 
     var maxRetry = 30;
