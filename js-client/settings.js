@@ -118,23 +118,23 @@ var settingsCss = `
 `;
 
 function readLscSettings() {
-  let form = document.getElementById("lsc-settings-asr");
+  let settings = document.getElementById("lsc-settings-asr");
   let asr = {};
-  for (let element of form.elements) {
+  for (let element of settings.elements) {
     if (element.id) {
       asr[element.id] = element.value;
     }
   }
-  form = document.getElementById("lsc-settings-subtitle");
+  settings = document.getElementById("lsc-settings-subtitle");
   let subtitle = {};
-  for (let element of form.elements) {
+  for (let element of settings.elements) {
     if (element.id) {
       subtitle[element.id] = element.value;
     }
   }
-  form = document.getElementById("lsc-settings-server");
+  settings = document.getElementById("lsc-settings-server");
   let server = {};
-  for (let element of form.elements) {
+  for (let element of settings.elements) {
     if (element.id) {
       server[element.id] = element.value;
     }
@@ -143,20 +143,20 @@ function readLscSettings() {
 }
 
 function writeLscSettings(dict) {
-  let form = document.getElementById("lsc-settings-asr");
-  for (let element of form.elements) {
+  let settings = document.getElementById("lsc-settings-asr");
+  for (let element of settings.elements) {
     if (element.id && element.id in dict["asr"]) {
       element.value = dict["asr"][element.id];
     }
   }
-  form = document.getElementById("lsc-settings-subtitle");
-  for (let element of form.elements) {
+  settings = document.getElementById("lsc-settings-subtitle");
+  for (let element of settings.elements) {
     if (element.id && element.id in dict["subtitle"]) {
       element.value = dict["subtitle"][element.id];
     }
   }
-  form = document.getElementById("lsc-settings-server");
-  for (let element of form.elements) {
+  settings = document.getElementById("lsc-settings-server");
+  for (let element of settings.elements) {
     if (element.id && element.id in dict["server"]) {
       element.value = dict["server"][element.id];
     }
@@ -200,11 +200,12 @@ function addLscSettingsElement() {
 }
 
 function showLscSettings() {
-  let form = document.getElementById("lsc-settings");
-  if (!form) {
+  let settings = document.getElementById("lsc-settings");
+  if (!settings) {
     addLscSettingsElement();
+    settings = document.getElementById("lsc-settings");
   }
-  form.style.display = "block";
+  settings.style.display = "block";
 }
 
 window.showLscSettings = showLscSettings;
