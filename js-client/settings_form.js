@@ -97,7 +97,7 @@ var settingsForm = `
 </form>
 `
 
-function readSettingsForm() {
+export function readSettingsForm() {
     let form = document.getElementById('asr-settings');
     let asr = {};
     for (let element of form.elements) {
@@ -122,7 +122,7 @@ function readSettingsForm() {
     return { 'asr': asr, 'subtitle': subtitle, 'server': server };
 }
 
-function writeSettingsForm(dict) {
+export function writeSettingsForm(dict) {
     let form = document.getElementById('asr-settings');
     for (let element of form.elements) {
         if (element.id && element.id in dict['asr']) {
@@ -169,7 +169,7 @@ function addSettingsFormElement() {
     document.body.appendChild(form);
 }
 
-function showSettingsForm() {
+export function showSettingsForm() {
     let form = document.getElementById('settings-form');
     if (!form) {
         addSettingsFormElement()

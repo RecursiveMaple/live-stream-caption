@@ -1,4 +1,4 @@
-class Subtitle {
+export class Subtitle {
     constructor(text, fontSize, backgroundColor, color) {
         this.text = text;
         this.fontSize = fontSize;

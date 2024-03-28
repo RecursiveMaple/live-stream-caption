@@ -11,7 +11,6 @@
 // @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/subtitle.js
 // @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/settings_form.js
 // @grant        GM_registerMenuCommand
-// @grant        GM_openInTab
 // ==/UserScript==
 
 
@@ -25,10 +24,11 @@ function main() {
 
 (function () {
     'use strict';
-
-    // 添加一个菜单项
+    
+    // add settings menu
     GM_registerMenuCommand('Settings', showSettingsForm);
 
+    // wait for video element to be ready
     var maxRetry = 30;
     var elemSearchCount = 0;
     var timer = setInterval(function () {
