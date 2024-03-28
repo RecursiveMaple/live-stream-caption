@@ -90,7 +90,6 @@ var settingsHtml = `
 
 var settingsCss = `
 #lsc-settings {
-  width: 100%;
   position: fixed;
   right: 0px;
   top: 50%;
