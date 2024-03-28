@@ -1,98 +1,102 @@
 var settingsHtml = `
-<div id="lsc-settings">
-  <div id="lsc-settings-asr">
-    <h4>ASR Settings</h4>
-    <div>
-      <label for="min_chunk_size">min_chunk_size:</label>
-      <input type="number" id="min_chunk_size" value="1" />
-    </div>
-    <div>
-      <label for="model">model:</label>
-      <select id="model">
-        <option value="medium">medium</option>
-        <option value="large-v2">large-v2</option>
-        <option value="large-v3" selected>large-v3</option>
-        <option value="medium.en">medium.en</option>
-      </select>
-    </div>
-    <div>
-      <label for="lan">lan:</label>
-      <input type="text" id="lan" value="auto" />
-    </div>
-    <div>
-      <label for="task">task:</label>
-      <select id="task">
-        <option value="transcribe" selected>transcribe</option>
-        <option value="translate">translate</option>
-      </select>
-    </div>
-    <div>
-      <label for="buffer_trimming">buffer_trimming:</label>
-      <select id="buffer_trimming">
-        <option value="sentence">sentence</option>
-        <option value="segment" selected>segment</option>
-      </select>
-    </div>
-    <div>
-      <label for="buffer_trimming_sec">buffer_trimming_sec:</label>
-      <input type="number" id="buffer_trimming_sec" value="5" />
-    </div>
-    <div>
-      <label for="initial_prompt">initial_prompt:</label>
-      <input type="text" id="initial_prompt" value="" />
-    </div>
+<div id="lsc-settings-asr">
+  <h4>ASR Settings</h4>
+  <div>
+    <label for="min_chunk_size">min_chunk_size:</label>
+    <input type="number" id="min_chunk_size" value="1" />
   </div>
-  <div id="lsc-settings-subtitle">
-    <h4>Subtitle Settings</h4>
-    <div>
-      <label for="font">font:</label>
-      <select id="font">
-        <option value="Arial" selected>Arial</option>
-        <option value="Courier">Courier</option>
-        <option value="Georgia">Georgia</option>
-        <option value="Impact">Impact</option>
-        <option value="Times New Roman">Times New Roman</option>
-        <option value="Verdana">Verdana</option>
-      </select>
-    </div>
-    <div>
-      <label for="font_size">font_size:</label>
-      <input type="number" id="font_size" value="20" />
-    </div>
-    <div>
-      <label for="font_color">font_color:</label>
-      <input type="color" id="font_color" value="#FFFFFF" />
-    </div>
-    <div>
-      <label for="font_transparency">font_transparency:</label>
-      <input type="range" id="font_transparency" min="0" max="1" step="0.1" value="1" />
-    </div>
-    <div>
-      <label for="background_color">background_color:</label>
-      <input type="color" id="background_color" value="#000000" />
-    </div>
-    <div>
-      <label for="background_transparency">background_transparency:</label>
-      <input type="range" id="background_transparency" min="0" max="1" step="0.1" value="1" />
-    </div>
+  <div>
+    <label for="model">model:</label>
+    <select id="model">
+      <option value="medium">medium</option>
+      <option value="large-v2">large-v2</option>
+      <option value="large-v3" selected>large-v3</option>
+      <option value="medium.en">medium.en</option>
+    </select>
   </div>
-  <div id="lsc-settings-server">
-    <h4>Server Settings</h4>
-    <div>
-      <label for="ip">ip:</label>
-      <input type="text" id="ip" value="localhost" />
-    </div>
-    <div>
-      <label for="port">port:</label>
-      <input type="number" id="port" value="8765" />
-    </div>
+  <div>
+    <label for="lan">lan:</label>
+    <input type="text" id="lan" value="auto" />
+  </div>
+  <div>
+    <label for="task">task:</label>
+    <select id="task">
+      <option value="transcribe" selected>transcribe</option>
+      <option value="translate">translate</option>
+    </select>
+  </div>
+  <div>
+    <label for="buffer_trimming">buffer_trimming:</label>
+    <select id="buffer_trimming">
+      <option value="sentence">sentence</option>
+      <option value="segment" selected>segment</option>
+    </select>
+  </div>
+  <div>
+    <label for="buffer_trimming_sec">buffer_trimming_sec:</label>
+    <input type="number" id="buffer_trimming_sec" value="5" />
+  </div>
+  <div>
+    <label for="initial_prompt">initial_prompt:</label>
+    <input type="text" id="initial_prompt" value="" />
+  </div>
+</div>
+<div id="lsc-settings-subtitle">
+  <h4>Subtitle Settings</h4>
+  <div>
+    <label for="font">font:</label>
+    <select id="font">
+      <option value="Arial" selected>Arial</option>
+      <option value="Courier">Courier</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Impact">Impact</option>
+      <option value="Times New Roman">Times New Roman</option>
+      <option value="Verdana">Verdana</option>
+    </select>
+  </div>
+  <div>
+    <label for="font_size">font_size:</label>
+    <input type="number" id="font_size" value="20" />
+  </div>
+  <div>
+    <label for="font_color">font_color:</label>
+    <input type="color" id="font_color" value="#FFFFFF" />
+  </div>
+  <div>
+    <label for="font_transparency">font_transparency:</label>
+    <input type="range" id="font_transparency" min="0" max="1" step="0.1" value="1" />
+  </div>
+  <div>
+    <label for="background_color">background_color:</label>
+    <input type="color" id="background_color" value="#000000" />
+  </div>
+  <div>
+    <label for="background_transparency">background_transparency:</label>
+    <input type="range" id="background_transparency" min="0" max="1" step="0.1" value="1" />
+  </div>
+</div>
+<div id="lsc-settings-server">
+  <h4>Server Settings</h4>
+  <div>
+    <label for="ip">ip:</label>
+    <input type="text" id="ip" value="localhost" />
+  </div>
+  <div>
+    <label for="port">port:</label>
+    <input type="number" id="port" value="8765" />
   </div>
 </div>
 `;
 
 var settingsCss = `
 #lsc-settings {
-  width: 100%;
+  position: fixed;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+  background-color: white;
+  border: 1px solid black;
 }
 #lsc-settings > div {
   margin-bottom: 20px;
@@ -114,6 +118,11 @@ var settingsCss = `
 #lsc-settings select {
   flex: 1;
   text-align: right;
+}
+#lsc-settings button {
+  position: absolute;
+  right: 0px;
+  top: 0px;
 }
 `;
 
@@ -167,11 +176,7 @@ function addLscSettingsElement() {
   // add element
   let element = document.createElement("div");
   element.innerHTML = settingsHtml;
-  element.style.position = "fixed";
-  element.style.right = "0px";
-  element.style.top = "50%";
-  element.style.transform = "translateY(-50%)";
-  element.style.zIndex = "100";
+  element.id = "lsc-settings";
   element.style.display = "none";
 
   // add style
@@ -182,9 +187,6 @@ function addLscSettingsElement() {
   // add close button
   let closeButton = document.createElement("button");
   closeButton.textContent = "Close";
-  closeButton.style.position = "absolute";
-  closeButton.style.right = "0px";
-  closeButton.style.top = "0px";
   closeButton.addEventListener("click", function () {
     element.style.display = "none";
   });
