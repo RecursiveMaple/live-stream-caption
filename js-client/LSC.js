@@ -9,7 +9,7 @@
 // @icon         https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/icon.png
 // @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/get_video_element.js
 // @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/subtitle.js
-// @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/settings_form.js
+// @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/settings.js
 // @grant        GM_registerMenuCommand
 // ==/UserScript==
 
@@ -24,7 +24,7 @@ function main() {
   "use strict";
 
   // add settings menu
-  GM_registerMenuCommand("Settings", showSettingsForm);
+  GM_registerMenuCommand("Settings", showLscSettings);
 
   // wait for video element to be ready
   var maxRetry = 30;
