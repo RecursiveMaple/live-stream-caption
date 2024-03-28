@@ -95,84 +95,92 @@ var settingsForm = `
     <input type="submit" value="Submit">
     </div>
 </form>
-`
+`;
 
-export function readSettingsForm() {
-    let form = document.getElementById('asr-settings');
-    let asr = {};
-    for (let element of form.elements) {
-        if (element.id) {
-            asr[element.id] = element.value;
-        }
+function readSettingsForm() {
+  let form = document.getElementById("asr-settings");
+  let asr = {};
+  for (let element of form.elements) {
+    if (element.id) {
+      asr[element.id] = element.value;
     }
-    form = document.getElementById('subtitle-settings');
-    let subtitle = {};
-    for (let element of form.elements) {
-        if (element.id) {
-            subtitle[element.id] = element.value;
-        }
+  }
+  form = document.getElementById("subtitle-settings");
+  let subtitle = {};
+  for (let element of form.elements) {
+    if (element.id) {
+      subtitle[element.id] = element.value;
     }
-    form = document.getElementById('server-settings');
-    let server = {};
-    for (let element of form.elements) {
-        if (element.id) {
-            server[element.id] = element.value;
-        }
+  }
+  form = document.getElementById("server-settings");
+  let server = {};
+  for (let element of form.elements) {
+    if (element.id) {
+      server[element.id] = element.value;
     }
-    return { 'asr': asr, 'subtitle': subtitle, 'server': server };
+  }
+  return { asr: asr, subtitle: subtitle, server: server };
 }
 
-export function writeSettingsForm(dict) {
-    let form = document.getElementById('asr-settings');
-    for (let element of form.elements) {
-        if (element.id && element.id in dict['asr']) {
-            element.value = dict['asr'][element.id];
-        }
+function writeSettingsForm(dict) {
+  let form = document.getElementById("asr-settings");
+  for (let element of form.elements) {
+    if (element.id && element.id in dict["asr"]) {
+      element.value = dict["asr"][element.id];
     }
-    form = document.getElementById('subtitle-settings');
-    for (let element of form.elements) {
-        if (element.id && element.id in dict['subtitle']) {
-            element.value = dict['subtitle'][element.id];
-        }
+  }
+  form = document.getElementById("subtitle-settings");
+  for (let element of form.elements) {
+    if (element.id && element.id in dict["subtitle"]) {
+      element.value = dict["subtitle"][element.id];
     }
-    form = document.getElementById('server-settings');
-    for (let element of form.elements) {
-        if (element.id && element.id in dict['server']) {
-            element.value = dict['server'][element.id];
-        }
+  }
+  form = document.getElementById("server-settings");
+  for (let element of form.elements) {
+    if (element.id && element.id in dict["server"]) {
+      element.value = dict["server"][element.id];
     }
+  }
 }
 
 function addSettingsFormElement() {
-    let form = document.createElement('div');
-    form.id = 'settings-form';
-    form.innerHTML = settingsForm;
-    form.style.position = 'fixed';
-    form.style.right = '0px';
-    form.style.top = '50%';
-    form.style.transform = 'translateY(-50%)';
-    form.style.zIndex = '100';
-    form.style.display = 'none';
-    // add close button
-    let closeButton = document.createElement('button');
-    closeButton.textContent = 'Close';
-    closeButton.style.position = 'absolute';
-    closeButton.style.right = '0px';
-    closeButton.style.top = '0px';
-    closeButton.addEventListener('click', function () {
-        form.style.display = 'none';
-    });
-    form.appendChild(closeButton);
-    form.addEventListener('blur', function () {
-        form.style.display = 'none';
-    }, true);
-    document.body.appendChild(form);
+  let form = document.createElement("div");
+  form.id = "settings-form";
+  form.innerHTML = settingsForm;
+  form.style.position = "fixed";
+  form.style.right = "0px";
+  form.style.top = "50%";
+  form.style.transform = "translateY(-50%)";
+  form.style.zIndex = "100";
+  form.style.display = "none";
+  // add close button
+  let closeButton = document.createElement("button");
+  closeButton.textContent = "Close";
+  closeButton.style.position = "absolute";
+  closeButton.style.right = "0px";
+  closeButton.style.top = "0px";
+  closeButton.addEventListener("click", function () {
+    form.style.display = "none";
+  });
+  form.appendChild(closeButton);
+  form.addEventListener(
+    "blur",
+    function () {
+      form.style.display = "none";
+    },
+    true
+  );
+  document.body.appendChild(form);
 }
 
-export function showSettingsForm() {
-    let form = document.getElementById('settings-form');
-    if (!form) {
-        addSettingsFormElement()
-    }
-    form.style.display = 'block';
+function showSettingsForm() {
+  let form = document.getElementById("settings-form");
+  if (!form) {
+    addSettingsFormElement();
+  }
+  form.style.display = "block";
 }
+
+window.showSettingsForm = showSettingsForm;
+window.readSettingsForm = readSettingsForm;
+window.writeSettingsForm = writeSettingsForm;

@@ -13,35 +13,31 @@
 // @grant        GM_registerMenuCommand
 // ==/UserScript==
 
-
-
 function main() {
-    var videoElement = getVideoElement();
-    var subtitle = new Subtitle('This is a subtitle', '24px', 'rgba(0, 0, 0, 0.5)', 'white');
-    subtitle.addNextToVideo(videoElement);
-    console.log('Live Stream Caption: Subtitle added');
+  var videoElement = getVideoElement();
+  var subtitle = new Subtitle("This is a subtitle", "24px", "rgba(0, 0, 0, 0.5)", "white");
+  subtitle.addNextToVideo(videoElement);
+  console.log("Live Stream Caption: Subtitle added");
 }
 
 (function () {
-    'use strict';
-    
-    // add settings menu
-    GM_registerMenuCommand('Settings', showSettingsForm);
+  "use strict";
 
-    // wait for video element to be ready
-    var maxRetry = 30;
-    var elemSearchCount = 0;
-    var timer = setInterval(function () {
-        elemSearchCount++;
-        if (getVideoElement()) {
-            console.log("Ready after", elemSearchCount, "tries");
-            clearInterval(timer);
-            main();
-        }
-        else if (elemSearchCount >= maxRetry) {
-            console.log("Searching failed after", elemSearchCount, "tries");
-            clearInterval(timer);
-        }
-    }, 500);
+  // add settings menu
+  GM_registerMenuCommand("Settings", showSettingsForm);
 
+  // wait for video element to be ready
+  var maxRetry = 30;
+  var elemSearchCount = 0;
+  var timer = setInterval(function () {
+    elemSearchCount++;
+    if (getVideoElement()) {
+      console.log("Ready after", elemSearchCount, "tries");
+      clearInterval(timer);
+      main();
+    } else if (elemSearchCount >= maxRetry) {
+      console.log("Searching failed after", elemSearchCount, "tries");
+      clearInterval(timer);
+    }
+  }, 500);
 })();
