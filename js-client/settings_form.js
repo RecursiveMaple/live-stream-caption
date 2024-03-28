@@ -199,7 +199,7 @@ function addLscSettingsElement() {
   document.body.appendChild(element);
 }
 
-function showSettingsForm() {
+function showLscSettings() {
   let form = document.getElementById("settings-form");
   if (!form) {
     addSettingsFormElement();
@@ -207,6 +207,6 @@ function showSettingsForm() {
   form.style.display = "block";
 }
 
-window.showSettingsForm = showSettingsForm;
-window.readSettingsForm = readSettingsForm;
-window.writeSettingsForm = writeSettingsForm;
+window.showLscSettings = showLscSettings;
+window.readLscSettings = readLscSettings;
+window.writeLscSettings = writeLscSettings;
