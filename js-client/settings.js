@@ -200,9 +200,9 @@ function addLscSettingsElement() {
 }
 
 function showLscSettings() {
-  let form = document.getElementById("settings-form");
+  let form = document.getElementById("lsc-settings");
   if (!form) {
-    addSettingsFormElement();
+    addLscSettingsElement();
   }
   form.style.display = "block";
 }
