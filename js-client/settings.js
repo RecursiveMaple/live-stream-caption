@@ -183,9 +183,6 @@ function addLscSettingsElement() {
   // add settingsHtml as child elements
   let settingsElement = document.createElement("div");
   settingsElement.innerHTML = settingsHtml;
-  while (settingsElement.firstChild) {
-    element.appendChild(settingsElement.firstChild);
-  }
 
   // add style
   let style = document.createElement('style');
