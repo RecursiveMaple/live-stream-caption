@@ -94,10 +94,12 @@ var settingsCss = `
   right: 0px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 100;
+  z-index: 1000;
   background-color: white;
   border: 1px solid black;
   padding: 10px;
+  overflow: auto;
+  max-height: 90vh;
 }
 #lsc-settings > div {
   margin-bottom: 20px;
