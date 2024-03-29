@@ -192,13 +192,11 @@ function addLscSettingsElement() {
     element.style.display = "none";
   });
   element.appendChild(closeButton);
-  element.addEventListener(
-    "blur",
-    function () {
+  document.addEventListener("click", function (event) {
+    if (!element.contains(event.target)) {
       element.style.display = "none";
-    },
-    true
-  );
+    }
+  });
   document.body.appendChild(element);
 }
 
