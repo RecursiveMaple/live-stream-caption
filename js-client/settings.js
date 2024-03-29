@@ -180,6 +180,13 @@ function addLscSettingsElement() {
   element.id = "lsc-settings";
   element.style.display = "none";
 
+  // add settingsHtml as child elements
+  let settingsElement = document.createElement("div");
+  settingsElement.innerHTML = settingsHtml;
+  while (settingsElement.firstChild) {
+    element.appendChild(settingsElement.firstChild);
+  }
+
   // add style
   let style = document.createElement('style');
   style.innerHTML = settingsCss;
@@ -192,13 +199,13 @@ function addLscSettingsElement() {
     element.style.display = "none";
   });
   element.appendChild(closeButton);
-  element.addEventListener(
-    "blur",
-    function () {
+
+  // add auto close listener
+  document.addEventListener("click", function (event) {
+    if (!element.contains(event.target)) {
       element.style.display = "none";
-    },
-    true
-  );
+    }
+  });
   document.body.appendChild(element);
 }
 
