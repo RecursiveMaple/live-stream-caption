@@ -97,6 +97,7 @@ var settingsCss = `
   z-index: 100;
   background-color: white;
   border: 1px solid black;
+  padding: 10px;
 }
 #lsc-settings > div {
   margin-bottom: 20px;
