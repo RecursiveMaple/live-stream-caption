@@ -8,7 +8,7 @@
 // @match        https://live.bilibili.com/*
 // @icon         https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/icon.png
 // @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/get_video_element.js
-// @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/subtitle.js
+// @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/caption.js
 // @require      https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/settings.js
 // @grant        GM_registerMenuCommand
 // @grant        GM_setValue
@@ -98,16 +98,16 @@ function setupClient() {
 //! change func name
 function main() {
   let videoElement = getVideoElement();
-  let subtitle = new Subtitle("This is a subtitle", "24px", "rgba(0, 0, 0, 0.5)", "white");
-  subtitle.attachToVideo(videoElement);
-  console.log("Live Stream Caption: Subtitle added");
+  let caption = new Caption("This is a caption", "24px", "rgba(0, 0, 0, 0.5)", "white");
+  caption.attachToVideo(videoElement);
+  console.log("Live Stream Caption: Caption added");
 }
 
 function saveSettings(settings) {
   let savedValue = GM_getValue("lscSettings");
   if (savedValue) {
     let dict = JSON.parse(savedValue);
-    dict["subtitle"] = settings["subtitle"];
+    dict["caption"] = settings["caption"];
     dict["server"] = settings["server"];
     dict["asr"][url] = settings["asr"];
     GM_setValue("lscSettings", JSON.stringify(dict));
@@ -168,7 +168,7 @@ function setupSettingsMenu() {
   }
 }
 
-function setupSubtitle() {
+function setupCaption() {
   let maxRetry = 30;
   let elemSearchCount = 0;
   let elemTimer = setInterval(function () {
@@ -197,7 +197,7 @@ var url = null;
       console.log("URL changed to", newUrl);
       url = newUrl;
       // wsStopAsr();
-      setupSubtitle();
+      setupCaption();
     }
   }, 5000);
 
@@ -205,5 +205,5 @@ var url = null;
 
   setupClient();
 
-  setupSubtitle();
+  setupCaption();
 })();
