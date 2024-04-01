@@ -3,12 +3,13 @@ var settingsHtml = `
 <div id="lsc-settings-actions">
   <h4>Actions</h4>
   <div>
-    <label for="server_status">server status:</label>
+    <button type="button" id="reload">reload</button>
+    <label for="server_status">server:</label>
     <input type="text" id="server_status" readonly />
   </div>
   <div>
     <button type="button" id="get_quality">get quality</button>
-    <select id="quality_options"></select>
+    <select id="live_quality"></select>
   </div>
   <div>
     <button type="button" id="start">start</button>
@@ -161,7 +162,6 @@ var settingsCss = `
 
 var defaultSettings = {
   asr: {
-    quality_options: "",
     min_chunk_size: 1,
     model: "large-v3",
     lan: "auto",
@@ -185,10 +185,11 @@ var defaultSettings = {
 };
 
 function readLscSettings() {
-  let elements = document.getElementById("quality_options");
+  let elements = document.getElementById("live_quality");
   let asr = {};
-  asr["quality_options"] = elements.value;
-
+  if (elements.value) {
+    asr["live_quality"] = elements.value;
+  }
   let settings = document.getElementById("lsc-settings-asr");
   elements = settings.querySelectorAll("input, select");
   for (let element of elements) {
@@ -216,17 +217,18 @@ function readLscSettings() {
 }
 
 function writeLscSettings(dict) {
-  let elements = document.getElementById("quality_options");
-  if (elements.options.length > 0) {
-    elements.value = dict["asr"]["quality_options"];
-  } else {
-    let newOption = document.createElement("option");
-    newOption.value = dict["asr"]["quality_options"];
-    newOption.text = dict["asr"]["quality_options"];
-    elements.add(newOption);
-    elements.value = dict["asr"]["quality_options"];
+  let elements = document.getElementById("live_quality");
+  if (dict["asr"]["live_quality"]) {
+    if (elements.options.length > 0) {
+      elements.value = dict["asr"]["live_quality"];
+    } else {
+      let newOption = document.createElement("option");
+      newOption.value = dict["asr"]["live_quality"];
+      newOption.text = dict["asr"]["live_quality"];
+      elements.add(newOption);
+      elements.value = dict["asr"]["live_quality"];
+    }
   }
-
   let settings = document.getElementById("lsc-settings-asr");
   elements = settings.querySelectorAll("input, select");
   for (let element of elements) {
@@ -248,6 +250,16 @@ function writeLscSettings(dict) {
       element.value = dict["server"][element.id];
     }
   }
+}
+
+function getAsrArgs() {
+  let settings = readLscSettings();
+  let args = [];
+  for (let key in settings.asr) {
+    args.push("--" + key);
+    args.push(settings.asr[key]);
+  }
+  return args;
 }
 
 function addLscSettingsElement() {
@@ -305,12 +317,12 @@ function showLscSettings() {
 function updateServerStatus(text) {
   let serverStatusElement = document.getElementById("server_status");
   if (serverStatusElement) {
-    serverStatusElement.innerText = text;
+    serverStatusElement.value = text;
   }
 }
 
 function setQualityOptions(optionsList, defaultOption) {
-  let selectElement = document.getElementById("quality_options");
+  let selectElement = document.getElementById("live_quality");
   if (!selectElement) {
     return;
   }
@@ -328,6 +340,7 @@ function setQualityOptions(optionsList, defaultOption) {
 window.showLscSettings = showLscSettings;
 window.readLscSettings = readLscSettings;
 window.writeLscSettings = writeLscSettings;
+window.getAsrArgs = getAsrArgs;
 window.addLscSettingsElement = addLscSettingsElement;
 window.updateServerStatus = updateServerStatus;
 window.setQualityOptions = setQualityOptions;

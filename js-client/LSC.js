@@ -19,13 +19,54 @@ function wsOnMessage(e) {
   let message = JSON.parse(e.data);
   if (message.cmd === "quality") {
     let qualityList = message.data;
-    let defaultQuality = document.getElementById("quality_options").value;
+    let defaultQuality = document.getElementById("live_quality").value;
     setQualityOptions(qualityList, defaultQuality);
+  } else if (message.cmd === "start") {
+    let out = message.data;
+    [t0, t1, text] = out;
+    console.log("ASR:", t0, t1, text);
   }
 }
+function wsQueryQuality() {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    let message = {
+      ts: Date.now(),
+      cmd: "quality",
+      data: url,
+    };
+    ws.send(JSON.stringify(message));
+    console.log("query quality for url:", url);
+  }
+}
+function wsStartAsr() {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    let args = getAsrArgs();
+    args.push("--live_url");
+    args.push(url);
+    let message = {
+      ts: Date.now(),
+      cmd: "start",
+      data: args,
+    };
+    ws.send(JSON.stringify(message));
+    console.log("Start ASR with args:", args.join(" "));
+  }
+}
+function wsStopAsr() {
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    let message = {
+      ts: Date.now(),
+      cmd: "stop",
+      data: "",
+    };
+    ws.send(JSON.stringify(message));
+    console.log("Stop ASR");
+  }
+}
+
 var ws = null;
 function setupClient() {
-  if (!(ws && ws.readyState === WebSocket.CLOSED)) {
+  if (ws && ws.readyState != WebSocket.CLOSED) {
     ws.close();
   }
   let settings = readLscSettings();
@@ -54,25 +95,15 @@ function setupClient() {
     updateServerStatus("CLOSED");
   };
 }
-function queryQuality() {
-  if (ws && ws.readyState === WebSocket.OPEN) {
-    let message = {
-      ts: Date.now(),
-      cmd: "quality",
-      data: "",
-    };
-    ws.send(JSON.stringify(message));
-  }
-}
+//! change func name
 function main() {
-  var videoElement = getVideoElement();
-  var subtitle = new Subtitle("This is a subtitle", "24px", "rgba(0, 0, 0, 0.5)", "white");
+  let videoElement = getVideoElement();
+  let subtitle = new Subtitle("This is a subtitle", "24px", "rgba(0, 0, 0, 0.5)", "white");
   subtitle.attachToVideo(videoElement);
   console.log("Live Stream Caption: Subtitle added");
 }
 
 function saveSettings(settings) {
-  let url = window.location.href;
   let savedValue = GM_getValue("lscSettings");
   if (savedValue) {
     let dict = JSON.parse(savedValue);
@@ -87,7 +118,6 @@ function saveSettings(settings) {
 }
 
 function loadSettings() {
-  let url = window.location.href;
   let savedValue = GM_getValue("lscSettings");
   if (savedValue) {
     let dict = JSON.parse(savedValue);
@@ -119,8 +149,15 @@ function setupSettingsMenu() {
     }
   });
 
+  // add event listener for button
+  let reloadButton = document.getElementById("reload");
+  reloadButton.addEventListener("click", setupClient);
   let getQualityButton = document.getElementById("get_quality");
-  getQualityButton.addEventListener("click", queryQuality);
+  getQualityButton.addEventListener("click", wsQueryQuality);
+  let startAsrButton = document.getElementById("start");
+  startAsrButton.addEventListener("click", wsStartAsr);
+  let stopAsrButton = document.getElementById("stop");
+  stopAsrButton.addEventListener("click", wsStopAsr);
 
   // load settings
   let savedValue = GM_getValue("lscSettings");
@@ -131,25 +168,42 @@ function setupSettingsMenu() {
   }
 }
 
+function setupSubtitle() {
+  let maxRetry = 30;
+  let elemSearchCount = 0;
+  let elemTimer = setInterval(function () {
+    elemSearchCount++;
+    if (getVideoElement()) {
+      console.log("VideoElement ready after", elemSearchCount, "tries");
+      clearInterval(elemTimer);
+      main();
+    } else if (elemSearchCount >= maxRetry) {
+      console.log("VideoElement Searching failed after", elemSearchCount, "tries");
+      clearInterval(elemTimer);
+    }
+  }, 500);
+}
+
+var url = null;
+
 (function () {
   "use strict";
+
+  // check if url changed
+  url = window.location.href;
+  setInterval(function () {
+    let newUrl = window.location.href;
+    if (newUrl !== url) {
+      console.log("URL changed to", newUrl);
+      url = newUrl;
+      // wsStopAsr();
+      setupSubtitle();
+    }
+  }, 5000);
 
   setupSettingsMenu();
 
   setupClient();
 
-  // wait for video element to be ready
-  var maxRetry = 30;
-  var elemSearchCount = 0;
-  var timer = setInterval(function () {
-    elemSearchCount++;
-    if (getVideoElement()) {
-      console.log("Ready after", elemSearchCount, "tries");
-      clearInterval(timer);
-      main();
-    } else if (elemSearchCount >= maxRetry) {
-      console.log("Searching failed after", elemSearchCount, "tries");
-      clearInterval(timer);
-    }
-  }, 500);
+  setupSubtitle();
 })();
