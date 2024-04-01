@@ -1,27 +1,43 @@
 var settingsHtml = `
+<button type="button" id="lsc-settings-close">Close</button>
+<div id="lsc-settings-actions">
+  <h4>Actions</h4>
+  <div>
+    <label for="server_status">server status:</label>
+    <input type="text" id="server_status" readonly />
+  </div>
+  <div>
+    <button type="button" id="get_quality">get quality</button>
+    <select id="quality_options"></select>
+  </div>
+  <div>
+    <button type="button" id="start">start</button>
+    <button type="button" id="stop">stop</button>
+  </div>
+</div>
 <div id="lsc-settings-asr">
   <h4>ASR Settings</h4>
   <div>
     <label for="min_chunk_size">min_chunk_size:</label>
-    <input type="number" id="min_chunk_size" value="1" />
+    <input type="number" id="min_chunk_size" step="0.1" />
   </div>
   <div>
     <label for="model">model:</label>
     <select id="model">
       <option value="medium">medium</option>
       <option value="large-v2">large-v2</option>
-      <option value="large-v3" selected>large-v3</option>
+      <option value="large-v3">large-v3</option>
       <option value="medium.en">medium.en</option>
     </select>
   </div>
   <div>
     <label for="lan">lan:</label>
-    <input type="text" id="lan" value="auto" />
+    <input type="text" id="lan" />
   </div>
   <div>
     <label for="task">task:</label>
     <select id="task">
-      <option value="transcribe" selected>transcribe</option>
+      <option value="transcribe">transcribe</option>
       <option value="translate">translate</option>
     </select>
   </div>
@@ -29,16 +45,16 @@ var settingsHtml = `
     <label for="buffer_trimming">buffer_trimming:</label>
     <select id="buffer_trimming">
       <option value="sentence">sentence</option>
-      <option value="segment" selected>segment</option>
+      <option value="segment">segment</option>
     </select>
   </div>
   <div>
     <label for="buffer_trimming_sec">buffer_trimming_sec:</label>
-    <input type="number" id="buffer_trimming_sec" value="5" />
+    <input type="number" id="buffer_trimming_sec" />
   </div>
   <div>
     <label for="initial_prompt">initial_prompt:</label>
-    <input type="text" id="initial_prompt" value="" />
+    <input type="text" id="initial_prompt" />
   </div>
 </div>
 <div id="lsc-settings-subtitle">
@@ -46,7 +62,7 @@ var settingsHtml = `
   <div>
     <label for="font">font:</label>
     <select id="font">
-      <option value="Arial" selected>Arial</option>
+      <option value="Arial">Arial</option>
       <option value="Courier">Courier</option>
       <option value="Georgia">Georgia</option>
       <option value="Impact">Impact</option>
@@ -56,34 +72,34 @@ var settingsHtml = `
   </div>
   <div>
     <label for="font_size">font_size:</label>
-    <input type="number" id="font_size" value="20" />
+    <input type="number" id="font_size" />
   </div>
   <div>
     <label for="font_color">font_color:</label>
-    <input type="color" id="font_color" value="#FFFFFF" />
+    <input type="color" id="font_color" />
   </div>
   <div>
     <label for="font_transparency">font_transparency:</label>
-    <input type="range" id="font_transparency" min="0" max="1" step="0.1" value="1" />
+    <input type="range" id="font_transparency" min="0" max="1" step="0.1" />
   </div>
   <div>
     <label for="background_color">background_color:</label>
-    <input type="color" id="background_color" value="#000000" />
+    <input type="color" id="background_color" />
   </div>
   <div>
     <label for="background_transparency">background_transparency:</label>
-    <input type="range" id="background_transparency" min="0" max="1" step="0.1" value="1" />
+    <input type="range" id="background_transparency" min="0" max="1" step="0.1" />
   </div>
 </div>
 <div id="lsc-settings-server">
   <h4>Server Settings</h4>
   <div>
     <label for="ip">ip:</label>
-    <input type="text" id="ip" value="localhost" />
+    <input type="text" id="ip" />
   </div>
   <div>
     <label for="port">port:</label>
-    <input type="number" id="port" value="8765" />
+    <input type="number" id="port" />
   </div>
 </div>
 `;
@@ -99,54 +115,99 @@ var settingsCss = `
   border: 1px solid black;
   padding: 10px;
   overflow: auto;
-  max-height: 90vh;
+  max-height: 80vh;
 }
-#lsc-settings > div {
-  margin-bottom: 20px;
+#lsc-settings button {
+  border: solid;
+  border-radius: 3px;
+  border-width: 1px;
+  border-color: gray;
+  background: lightgray;
+  position: absolute;
+}
+#lsc-settings button:active {
+  background: darkgray;
+}
+#lsc-settings-close {
+  right: 10px;
+  top: 10px;
 }
 #lsc-settings h4 {
-  font-size: 16px;
+  text-align: center;
+}
+#lsc-settings div {
   margin-bottom: 10px;
 }
 #lsc-settings div > div {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
 }
 #lsc-settings label {
   flex: 1;
   text-align: left;
 }
 #lsc-settings input,
-#lsc-settings select {
+#lsc-settings select{
   flex: 1;
   text-align: right;
 }
-#lsc-settings button {
-  position: absolute;
-  right: 0px;
-  top: 0px;
+#lsc-settings-actions button {
+  flex: 1;
+  text-align: center;
+  position: relative;
+  margin-right: 10px;
 }
 `;
 
+var defaultSettings = {
+  asr: {
+    quality_options: "",
+    min_chunk_size: 1,
+    model: "large-v3",
+    lan: "auto",
+    task: "transcribe",
+    buffer_trimming: "segment",
+    buffer_trimming_sec: 5,
+    initial_prompt: "",
+  },
+  subtitle: {
+    font: "Arial",
+    font_size: 20,
+    font_color: "#FFFFFF",
+    font_transparency: 1,
+    background_color: "#000000",
+    background_transparency: 1,
+  },
+  server: {
+    ip: "localhost",
+    port: 8765,
+  },
+};
+
 function readLscSettings() {
-  let settings = document.getElementById("lsc-settings-asr");
+  let elements = document.getElementById("quality_options");
   let asr = {};
-  for (let element of settings.elements) {
+  asr["quality_options"] = elements.value;
+
+  let settings = document.getElementById("lsc-settings-asr");
+  elements = settings.querySelectorAll("input, select");
+  for (let element of elements) {
     if (element.id) {
       asr[element.id] = element.value;
     }
   }
   settings = document.getElementById("lsc-settings-subtitle");
   let subtitle = {};
-  for (let element of settings.elements) {
+  elements = settings.querySelectorAll("input, select");
+  for (let element of elements) {
     if (element.id) {
       subtitle[element.id] = element.value;
     }
   }
   settings = document.getElementById("lsc-settings-server");
   let server = {};
-  for (let element of settings.elements) {
+  elements = settings.querySelectorAll("input, select");
+  for (let element of elements) {
     if (element.id) {
       server[element.id] = element.value;
     }
@@ -155,20 +216,34 @@ function readLscSettings() {
 }
 
 function writeLscSettings(dict) {
+  let elements = document.getElementById("quality_options");
+  if (elements.options.length > 0) {
+    elements.value = dict["asr"]["quality_options"];
+  } else {
+    let newOption = document.createElement("option");
+    newOption.value = dict["asr"]["quality_options"];
+    newOption.text = dict["asr"]["quality_options"];
+    elements.add(newOption);
+    elements.value = dict["asr"]["quality_options"];
+  }
+
   let settings = document.getElementById("lsc-settings-asr");
-  for (let element of settings.elements) {
+  elements = settings.querySelectorAll("input, select");
+  for (let element of elements) {
     if (element.id && element.id in dict["asr"]) {
       element.value = dict["asr"][element.id];
     }
   }
   settings = document.getElementById("lsc-settings-subtitle");
-  for (let element of settings.elements) {
+  elements = settings.querySelectorAll("input, select");
+  for (let element of elements) {
     if (element.id && element.id in dict["subtitle"]) {
       element.value = dict["subtitle"][element.id];
     }
   }
   settings = document.getElementById("lsc-settings-server");
-  for (let element of settings.elements) {
+  elements = settings.querySelectorAll("input, select");
+  for (let element of elements) {
     if (element.id && element.id in dict["server"]) {
       element.value = dict["server"][element.id];
     }
@@ -182,22 +257,19 @@ function addLscSettingsElement() {
   element.id = "lsc-settings";
   element.style.display = "none";
 
-  // add settingsHtml as child elements
-  let settingsElement = document.createElement("div");
-  settingsElement.innerHTML = settingsHtml;
-
   // add style
-  let style = document.createElement('style');
+  let style = document.createElement("style");
   style.innerHTML = settingsCss;
   document.head.appendChild(style);
 
-  // add close button
-  let closeButton = document.createElement("button");
-  closeButton.textContent = "Close";
+  // add element to body
+  document.body.appendChild(element);
+
+  // add close button listener
+  let closeButton = document.getElementById("lsc-settings-close");
   closeButton.addEventListener("click", function () {
     element.style.display = "none";
   });
-  element.appendChild(closeButton);
 
   // add auto close listener
   document.addEventListener("click", function (event) {
@@ -205,18 +277,57 @@ function addLscSettingsElement() {
       element.style.display = "none";
     }
   });
-  document.body.appendChild(element);
+
+  // add input listeners
+  let fontTransparencyInput = document.getElementById("font_transparency");
+  fontTransparencyInput.addEventListener("input", function () {
+    this.title = this.value;
+  });
+  let backgroundTransparencyInput = document.getElementById("background_transparency");
+  backgroundTransparencyInput.addEventListener("input", function () {
+    this.title = this.value;
+  });
+
+  // write default settings
+  writeLscSettings(defaultSettings);
+
+  return element;
 }
 
 function showLscSettings() {
   let settings = document.getElementById("lsc-settings");
   if (!settings) {
-    addLscSettingsElement();
-    settings = document.getElementById("lsc-settings");
+    settings = addLscSettingsElement();
   }
   settings.style.display = "block";
+}
+
+function updateServerStatus(text) {
+  let serverStatusElement = document.getElementById("server_status");
+  if (serverStatusElement) {
+    serverStatusElement.innerText = text;
+  }
+}
+
+function setQualityOptions(optionsList, defaultOption) {
+  let selectElement = document.getElementById("quality_options");
+  if (!selectElement) {
+    return;
+  }
+  selectElement.innerHTML = "";
+  optionsList.forEach(function (option) {
+    let optElement = document.createElement("option");
+    optElement.value = option;
+    optElement.text = option;
+    selectElement.appendChild(optElement);
+  });
+  // 设置默认选项
+  selectElement.value = defaultOption;
 }
 
 window.showLscSettings = showLscSettings;
 window.readLscSettings = readLscSettings;
 window.writeLscSettings = writeLscSettings;
+window.addLscSettingsElement = addLscSettingsElement;
+window.updateServerStatus = updateServerStatus;
+window.setQualityOptions = setQualityOptions;

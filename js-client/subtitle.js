@@ -61,7 +61,7 @@ class Subtitle {
     }
   }
 
-  addNextToVideo(videoElement) {
+  attachToVideo(videoElement) {
     videoElement.parentNode.insertBefore(this.element, videoElement.nextSibling);
     this.element.style.top = videoElement.offsetHeight - this.element.offsetHeight + "px";
     this.element.style.left = videoElement.offsetWidth / 2 - this.element.offsetWidth / 2 + "px";

@@ -36,7 +36,7 @@ async def send_message(websocket, path, shared_dict):
             print(out)
             # start,end,text = out
             response = {
-                "ts": time.time(),
+                "ts": int(time.time()*1000),
                 "cmd": "start",
                 "data": out,
             }
@@ -54,7 +54,7 @@ async def recv_message(websocket, path, shared_dict, message):
     if command == "quality":
         quality = query_live_quality(data)
         response = {
-            "ts": time.time(),
+            "ts": int(time.time()*1000),
             "cmd": "quality",
             "data": quality,
         }
