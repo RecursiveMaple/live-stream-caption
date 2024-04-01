@@ -58,17 +58,18 @@ var settingsHtml = `
     <input type="text" id="initial_prompt" />
   </div>
 </div>
-<div id="lsc-settings-subtitle">
-  <h4>Subtitle Settings</h4>
+<div id="lsc-settings-caption">
+  <h4>Caption Settings</h4>
   <div>
     <label for="font">font:</label>
     <select id="font">
-      <option value="Arial">Arial</option>
-      <option value="Courier">Courier</option>
-      <option value="Georgia">Georgia</option>
-      <option value="Impact">Impact</option>
-      <option value="Times New Roman">Times New Roman</option>
-      <option value="Verdana">Verdana</option>
+      <option value="Monospaced Serif">Monospaced Serif</option>
+      <option value="Proportional Serif">Proportional Serif</option>
+      <option value="Monospaced Sans-Serif">Monospaced Sans-Serif</option>
+      <option value="Proportional Sans-Serif">Proportional Sans-Serif</option>
+      <option value="Casua">Casua</option>
+      <option value="Cursive">Cursive</option>
+      <option value="Small Capitals">Small Capitals</option>
     </select>
   </div>
   <div>
@@ -170,7 +171,7 @@ var defaultSettings = {
     buffer_trimming_sec: 5,
     initial_prompt: "",
   },
-  subtitle: {
+  caption: {
     font: "Arial",
     font_size: 20,
     font_color: "#FFFFFF",
@@ -197,12 +198,12 @@ function readLscSettings() {
       asr[element.id] = element.value;
     }
   }
-  settings = document.getElementById("lsc-settings-subtitle");
-  let subtitle = {};
+  settings = document.getElementById("lsc-settings-caption");
+  let caption = {};
   elements = settings.querySelectorAll("input, select");
   for (let element of elements) {
     if (element.id) {
-      subtitle[element.id] = element.value;
+      caption[element.id] = element.value;
     }
   }
   settings = document.getElementById("lsc-settings-server");
@@ -213,7 +214,7 @@ function readLscSettings() {
       server[element.id] = element.value;
     }
   }
-  return { asr: asr, subtitle: subtitle, server: server };
+  return { asr: asr, caption: caption, server: server };
 }
 
 function writeLscSettings(dict) {
@@ -236,11 +237,11 @@ function writeLscSettings(dict) {
       element.value = dict["asr"][element.id];
     }
   }
-  settings = document.getElementById("lsc-settings-subtitle");
+  settings = document.getElementById("lsc-settings-caption");
   elements = settings.querySelectorAll("input, select");
   for (let element of elements) {
-    if (element.id && element.id in dict["subtitle"]) {
-      element.value = dict["subtitle"][element.id];
+    if (element.id && element.id in dict["caption"]) {
+      element.value = dict["caption"][element.id];
     }
   }
   settings = document.getElementById("lsc-settings-server");

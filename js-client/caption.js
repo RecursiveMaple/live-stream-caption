@@ -1,18 +1,34 @@
-class Subtitle {
-  constructor(text, fontSize, backgroundColor, color) {
+function hexToRGBA(hex, alpha) {
+  var r = parseInt(hex.slice(1, 3), 16),
+    g = parseInt(hex.slice(3, 5), 16),
+    b = parseInt(hex.slice(5, 7), 16);
+
+  if (alpha) {
+    return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+  } else {
+    return "rgb(" + r + ", " + g + ", " + b + ")";
+  }
+}
+
+class Caption {
+  constructor(text, font, fontSize, fontColor, fontAlpha, backgroundColor, backgroundAlpha) {
     this.text = text;
+    this.font = font;
     this.fontSize = fontSize;
+    this.fontColor = fontColor;
+    this.fontAlpha = fontAlpha;
     this.backgroundColor = backgroundColor;
-    this.color = color;
+    this.backgroundAlpha = backgroundAlpha;
 
     this.element = document.createElement("div");
     this.element.id = "live-stream-caption";
     this.element.style.position = "absolute";
     this.element.style.cursor = "move";
+    this.element.style.fontFamily = this.font;
     this.element.style.fontSize = this.fontSize;
-    this.element.style.backgroundColor = this.backgroundColor;
-    this.element.style.color = this.color;
-    this.element.style.padding = "10px";
+    this.element.style.color = hexToRGBA(this.fontColor, this.fontAlpha);
+    this.element.style.backgroundColor = hexToRGBA(this.backgroundColor, this.backgroundAlpha);
+    this.element.style.padding = "5px";
     this.element.style.borderRadius = "5px";
     this.element.style.zIndex = "100";
     this.element.innerText = this.text;
@@ -68,4 +84,4 @@ class Subtitle {
   }
 }
 
-window.Subtitle = Subtitle;
+window.Caption = Caption;
