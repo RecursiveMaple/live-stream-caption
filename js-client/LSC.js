@@ -81,7 +81,7 @@ function setupClient() {
   };
 
   ws.onmessage = function (e) {
-    console.debug("Received: '" + e.data + "'");
+    // console.debug("Received: '" + e.data + "'");
     wsOnMessage(e);
   };
 

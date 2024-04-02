@@ -3,7 +3,7 @@ var captionCss = `
   margin: 0;
   padding: 0;
   border: 0;
-  width: 75%;
+  max-width: 75%;
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
@@ -33,6 +33,7 @@ class Caption {
     this.fontAlpha = fontAlpha;
     this.backgroundColor = backgroundColor;
     this.backgroundAlpha = backgroundAlpha;
+    this.defaultText = "The quick brown fox jumps over the lazy dog";
     this.timeoutId = null;
 
     // add css
@@ -46,6 +47,7 @@ class Caption {
     this.element.style.fontSize = this.fontSize + "px";
     this.element.style.color = hexToRGBA(this.fontColor, this.fontAlpha);
     this.element.style.backgroundColor = hexToRGBA(this.backgroundColor, this.backgroundAlpha);
+    this.element.innerText = this.defaultText;
 
     this._dragElement(this.element);
   }
@@ -95,10 +97,11 @@ class Caption {
     videoElement.parentNode.insertBefore(this.element, videoElement.nextSibling);
     this.element.style.top = videoElement.offsetHeight - this.element.offsetHeight + "px";
     this.element.style.left = videoElement.offsetWidth / 2 - this.element.offsetWidth / 2 + "px";
+    this.element.style.display = "none";
   }
 
   pushText(text) {
-    this.element.innerText = this.text;
+    this.element.innerText = text;
     this.element.style.display = "block";
     if (this.timeoutId) {
       clearTimeout(this.timeoutId);
