@@ -5,7 +5,7 @@ videoSelector = {
 
 function getVideoElement() {
   var hostname = window.location.hostname;
-  // console.log('Live Stream Caption: Current hostname is', hostname);
+  // console.debug('Live Stream Caption: Current hostname is', hostname);
   return document.querySelector(videoSelector[hostname]);
 }
 

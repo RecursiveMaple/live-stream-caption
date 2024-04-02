@@ -1,3 +1,18 @@
+var captionCss = `
+#live-stream-caption {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  width: 75%;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  position: absolute;
+  cursor: move;
+  z-index: 100;
+}
+`;
+
 function hexToRGBA(hex, alpha) {
   var r = parseInt(hex.slice(1, 3), 16),
     g = parseInt(hex.slice(3, 5), 16),
@@ -12,27 +27,25 @@ function hexToRGBA(hex, alpha) {
 
 class Caption {
   constructor(font, fontSize, fontColor, fontAlpha, backgroundColor, backgroundAlpha) {
-    this.text = "A lazy fox jumps over a brown dog.";
     this.font = font;
     this.fontSize = fontSize;
     this.fontColor = fontColor;
     this.fontAlpha = fontAlpha;
     this.backgroundColor = backgroundColor;
     this.backgroundAlpha = backgroundAlpha;
+    this.timeoutId = null;
+
+    // add css
+    let style = document.createElement("style");
+    style.innerHTML = captionCss;
+    document.head.appendChild(style);
 
     this.element = document.createElement("div");
     this.element.id = "live-stream-caption";
-    this.element.style.position = "absolute";
-    this.element.style.cursor = "move";
     this.element.style.fontFamily = this.font;
     this.element.style.fontSize = this.fontSize + "px";
     this.element.style.color = hexToRGBA(this.fontColor, this.fontAlpha);
     this.element.style.backgroundColor = hexToRGBA(this.backgroundColor, this.backgroundAlpha);
-    this.element.style.padding = "5px";
-    this.element.style.borderRadius = "5px";
-    this.element.style.zIndex = "100";
-    this.element.innerText = this.text;
-    console.log("Caption style:", this.element.style.cssText);
 
     this._dragElement(this.element);
   }
@@ -83,10 +96,21 @@ class Caption {
     this.element.style.top = videoElement.offsetHeight - this.element.offsetHeight + "px";
     this.element.style.left = videoElement.offsetWidth / 2 - this.element.offsetWidth / 2 + "px";
   }
+
+  pushText(text) {
+    this.element.innerText = this.text;
+    this.element.style.display = "block";
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+    //! timeout设置为参数
+    this.timeoutId = setTimeout(() => {
+      this.element.style.display = "none";
+    }, 5000);
+  }
 }
 
 function addCaption(videoElem, captionSettings) {
-  console.log("Adding caption: ", captionSettings);
   let caption = new Caption(
     captionSettings.font,
     captionSettings.font_size,
@@ -96,6 +120,7 @@ function addCaption(videoElem, captionSettings) {
     captionSettings.background_alpha
   );
   caption.attachToVideo(videoElem);
-  console.log("Caption added");
+  console.debug("Caption added");
+
   return caption;
 }

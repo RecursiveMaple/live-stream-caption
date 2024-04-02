@@ -173,11 +173,11 @@ var defaultSettings = {
   },
   caption: {
     font: "Proportional Sans-Serif",
-    font_size: 18,
+    font_size: 20,
     font_color: "#FFFFFF",
-    font_alpha: 1,
+    font_alpha: 0.8,
     background_color: "#000000",
-    background_alpha: 1,
+    background_alpha: 0.4,
   },
   server: {
     ip: "localhost",

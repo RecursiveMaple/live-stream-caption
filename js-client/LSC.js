@@ -24,8 +24,10 @@ function wsOnMessage(e) {
   } else if (message.cmd === "start") {
     let out = message.data;
     [t0, t1, text] = out;
-    //! 处理字幕
-    console.log("ASR:", t0, t1, text);
+    console.debug("ASR:", t0, t1, text);
+    if (caption) {
+      caption.pushText(text);
+    }
   }
 }
 function wsQueryQuality() {
@@ -36,7 +38,7 @@ function wsQueryQuality() {
       data: url,
     };
     ws.send(JSON.stringify(message));
-    console.log("query quality for url:", url);
+    console.debug("query quality for url:", url);
   }
 }
 function wsStartAsr() {
@@ -50,7 +52,7 @@ function wsStartAsr() {
       data: args,
     };
     ws.send(JSON.stringify(message));
-    console.log("Start ASR with args:", args.join(" "));
+    console.debug("Start ASR with args:", args.join(" "));
   }
 }
 function wsStopAsr() {
@@ -61,7 +63,7 @@ function wsStopAsr() {
       data: "",
     };
     ws.send(JSON.stringify(message));
-    console.log("Stop ASR");
+    console.debug("Stop ASR");
   }
 }
 
@@ -74,24 +76,24 @@ function setupClient() {
   ws = new WebSocket(`ws://${settings.server.ip}:${settings.server.port}`);
 
   ws.onopen = function () {
-    console.log("WebSocket Client Connected");
+    console.debug("WebSocket Client Connected");
     updateServerStatus("OPEN");
   };
 
   ws.onmessage = function (e) {
-    console.log("Received: '" + e.data + "'");
+    console.debug("Received: '" + e.data + "'");
     wsOnMessage(e);
   };
 
   ws.onerror = function (e) {
-    console.log("WebSocket encountered error: ", e.message, "Closing socket");
+    console.debug("WebSocket encountered error: ", e.message, "Closing socket");
   };
 
   ws.onclose = function (e) {
     if (e.wasClean) {
-      console.log(`WebSocket connection closed cleanly, code=${e.code}, reason=${e.reason}`);
+      console.debug(`WebSocket connection closed cleanly, code=${e.code}, reason=${e.reason}`);
     } else {
-      console.log("WebSocket connection died");
+      console.debug("WebSocket connection died");
     }
     updateServerStatus("CLOSED");
   };
@@ -133,7 +135,7 @@ function setupSettingsMenu() {
     if (element.id) {
       element.addEventListener("change", function () {
         saveSettings(readLscSettings());
-        console.log("Settings saved");
+        console.debug("Settings saved");
       });
       // setup server connection
       if (settingsGroup.server.includes(element.id)) {
@@ -166,14 +168,14 @@ function setupCaption() {
   let elemTimer = setInterval(function () {
     elemSearchCount++;
     if (getVideoElement()) {
-      console.log("VideoElement ready after", elemSearchCount, "tries");
+      console.debug("VideoElement ready after", elemSearchCount, "tries");
       clearInterval(elemTimer);
       if (caption) {
         caption.element.remove();
       }
       caption = addCaption(getVideoElement(), loadSettings().caption);
     } else if (elemSearchCount >= maxRetry) {
-      console.log("VideoElement searching failed after", elemSearchCount, "tries");
+      console.debug("VideoElement searching failed after", elemSearchCount, "tries");
       clearInterval(elemTimer);
     }
   }, 500);
@@ -189,7 +191,7 @@ var url = null;
   setInterval(function () {
     let newUrl = window.location.href;
     if (newUrl !== url) {
-      console.log("URL changed to", newUrl);
+      console.debug("URL changed to", newUrl);
       url = newUrl;
       // wsStopAsr();
       setupCaption();
