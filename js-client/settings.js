@@ -172,8 +172,8 @@ var defaultSettings = {
     initial_prompt: "",
   },
   caption: {
-    font: "Arial",
-    font_size: 20,
+    font: "Proportional Sans-Serif",
+    font_size: 18,
     font_color: "#FFFFFF",
     font_alpha: 1,
     background_color: "#000000",
@@ -183,6 +183,12 @@ var defaultSettings = {
     ip: "localhost",
     port: 8765,
   },
+};
+
+var settingsGroup = {
+  asr: ["min_chunk_size", "model", "lan", "task", "buffer_trimming", "buffer_trimming_sec", "initial_prompt"],
+  caption: ["font", "font_size", "font_color", "font_alpha", "background_color", "background_alpha"],
+  server: ["ip", "port"],
 };
 
 function readLscSettings() {
@@ -292,12 +298,12 @@ function addLscSettingsElement() {
   });
 
   // add input listeners
-  let fontTransparencyInput = document.getElementById("font_alpha");
-  fontTransparencyInput.addEventListener("input", function () {
+  let fontAlphaInput = document.getElementById("font_alpha");
+  fontAlphaInput.addEventListener("input", function () {
     this.title = this.value;
   });
-  let backgroundTransparencyInput = document.getElementById("background_alpha");
-  backgroundTransparencyInput.addEventListener("input", function () {
+  let backgroundAlphaInput = document.getElementById("background_alpha");
+  backgroundAlphaInput.addEventListener("input", function () {
     this.title = this.value;
   });
 
@@ -337,11 +343,3 @@ function setQualityOptions(optionsList, defaultOption) {
   // 设置默认选项
   selectElement.value = defaultOption;
 }
-
-window.showLscSettings = showLscSettings;
-window.readLscSettings = readLscSettings;
-window.writeLscSettings = writeLscSettings;
-window.getAsrArgs = getAsrArgs;
-window.addLscSettingsElement = addLscSettingsElement;
-window.updateServerStatus = updateServerStatus;
-window.setQualityOptions = setQualityOptions;

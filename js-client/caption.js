@@ -11,8 +11,8 @@ function hexToRGBA(hex, alpha) {
 }
 
 class Caption {
-  constructor(text, font, fontSize, fontColor, fontAlpha, backgroundColor, backgroundAlpha) {
-    this.text = text;
+  constructor(font, fontSize, fontColor, fontAlpha, backgroundColor, backgroundAlpha) {
+    this.text = "A lazy fox jumps over a brown dog.";
     this.font = font;
     this.fontSize = fontSize;
     this.fontColor = fontColor;
@@ -25,13 +25,14 @@ class Caption {
     this.element.style.position = "absolute";
     this.element.style.cursor = "move";
     this.element.style.fontFamily = this.font;
-    this.element.style.fontSize = this.fontSize;
+    this.element.style.fontSize = this.fontSize + "px";
     this.element.style.color = hexToRGBA(this.fontColor, this.fontAlpha);
     this.element.style.backgroundColor = hexToRGBA(this.backgroundColor, this.backgroundAlpha);
     this.element.style.padding = "5px";
     this.element.style.borderRadius = "5px";
     this.element.style.zIndex = "100";
     this.element.innerText = this.text;
+    console.log("Caption style:", this.element.style.cssText);
 
     this._dragElement(this.element);
   }
@@ -85,18 +86,16 @@ class Caption {
 }
 
 function addCaption(videoElem, captionSettings) {
+  console.log("Adding caption: ", captionSettings);
   let caption = new Caption(
-    captionSettings.text,
     captionSettings.font,
-    captionSettings.fontSize,
-    captionSettings.fontColor,
-    captionSettings.fontAlpha,
-    captionSettings.backgroundColor,
-    captionSettings.backgroundAlpha
+    captionSettings.font_size,
+    captionSettings.font_color,
+    captionSettings.font_alpha,
+    captionSettings.background_color,
+    captionSettings.background_alpha
   );
   caption.attachToVideo(videoElem);
   console.log("Caption added");
+  return caption;
 }
-
-window.Caption = Caption;
-window.addCaption = addCaption;

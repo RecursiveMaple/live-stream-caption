@@ -115,12 +115,13 @@ function loadSettings() {
   let savedValue = GM_getValue("lscSettings");
   if (savedValue) {
     let dict = JSON.parse(savedValue);
-    if (dict["asr"] && dict["asr"][url]) {
+    if (dict["asr"][url]) {
       return { asr: dict["asr"][url], caption: dict["caption"], server: dict["server"] };
+    } else {
+      return { asr: defaultSettings["asr"], caption: dict["caption"], server: dict["server"] };
     }
-  } else {
-    return defaultSettings;
   }
+  return defaultSettings;
 }
 
 function setupSettingsMenu() {
@@ -135,8 +136,11 @@ function setupSettingsMenu() {
         console.log("Settings saved");
       });
       // setup server connection
-      if (element.id === "ip" || element.id === "port") {
+      if (settingsGroup.server.includes(element.id)) {
         element.addEventListener("change", setupClient);
+      }
+      if (settingsGroup.caption.includes(element.id)) {
+        element.addEventListener("change", setupCaption);
       }
     }
   });
@@ -155,6 +159,7 @@ function setupSettingsMenu() {
   writeLscSettings(loadSettings());
 }
 
+var caption = null;
 function setupCaption() {
   let maxRetry = 30;
   let elemSearchCount = 0;
@@ -163,7 +168,10 @@ function setupCaption() {
     if (getVideoElement()) {
       console.log("VideoElement ready after", elemSearchCount, "tries");
       clearInterval(elemTimer);
-      addCaption(getVideoElement(), loadSettings().caption);
+      if (caption) {
+        caption.element.remove();
+      }
+      caption = addCaption(getVideoElement(), loadSettings().caption);
     } else if (elemSearchCount >= maxRetry) {
       console.log("VideoElement searching failed after", elemSearchCount, "tries");
       clearInterval(elemTimer);
