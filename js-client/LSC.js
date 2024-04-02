@@ -73,7 +73,7 @@ function setupClient() {
     ws.close();
   }
   let settings = loadSettings();
-  ws = new WebSocket(`ws://${settings.server.ip}:${settings.server.port}`);
+  ws = new WebSocket(`wss://${settings.server.ip}:${settings.server.port}`);
 
   ws.onopen = function () {
     console.debug("WebSocket Client Connected");
@@ -86,7 +86,7 @@ function setupClient() {
   };
 
   ws.onerror = function (e) {
-    console.debug("WebSocket encountered error: ", e.message, "Closing socket");
+    console.debug("WebSocket encountered error: ", e.error, "Closing socket");
   };
 
   ws.onclose = function (e) {

@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import json
+import ssl
 import time
 from concurrent.futures import ProcessPoolExecutor
 from multiprocessing import Manager
@@ -36,7 +37,7 @@ async def send_message(websocket, path, shared_dict):
             print(out)
             # start,end,text = out
             response = {
-                "ts": int(time.time()*1000),
+                "ts": int(time.time() * 1000),
                 "cmd": "start",
                 "data": out,
             }
@@ -54,7 +55,7 @@ async def recv_message(websocket, path, shared_dict, message):
     if command == "quality":
         quality = query_live_quality(data)
         response = {
-            "ts": int(time.time()*1000),
+            "ts": int(time.time() * 1000),
             "cmd": "quality",
             "data": quality,
         }
@@ -83,7 +84,10 @@ async def recv_message(websocket, path, shared_dict, message):
 
 
 if __name__ == "__main__":
-    start_server = websockets.serve(server_handler, "localhost", 8765)
+    ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+    ssl_context.load_cert_chain(certfile="lsc-cert.pem", keyfile="lsc-key.pem")
+
+    start_server = websockets.serve(server_handler, "localhost", 8765, ssl=ssl_context)
 
     asyncio.get_event_loop().run_until_complete(start_server)
     asyncio.get_event_loop().run_forever()
