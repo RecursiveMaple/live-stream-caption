@@ -61,12 +61,12 @@ This section help you setup LSC both in your OS and browser.
 1. Navigate to the streamer's website.
 2. Open LSC setting.
 
-    ![setting-entry](http://url/to/img.png)
+    ![setting-entry](resources/setting-entry.png)
 3. Choose your settings.
 
     Note that the sector ASR setting is saved per streamer, while other settings are global among all streamers and streaming platforms.
 
-    ![setting-page](http://url/to/img.png)
+    ![setting-page](resources/setting-page.png)
 
     > [!IMPORTANT]
     > 1. Due to safety issue on self-signed certificate, you need to visit your backend url manully for the first time you set an ip and port. E.g., open <https://localhost:8765> and accept unsafe connction in the popup warning page.
@@ -75,4 +75,4 @@ This section help you setup LSC both in your OS and browser.
 
     Press 'reload' if the server status is 'CLOSED'. Press 'get quality' if no chioce shows up in the drop-down box. Then choose a quality (usually you want the lowest quality). Last, press 'start'. You can stop LSC by 'stop' button.
 
-    ![setting-actions](http://url/to/img.png)
+    ![setting-actions](resources/setting-actions.png)
