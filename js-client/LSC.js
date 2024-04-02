@@ -24,6 +24,7 @@ function wsOnMessage(e) {
   } else if (message.cmd === "start") {
     let out = message.data;
     [t0, t1, text] = out;
+    //! 处理字幕
     console.log("ASR:", t0, t1, text);
   }
 }
@@ -69,7 +70,7 @@ function setupClient() {
   if (ws && ws.readyState != WebSocket.CLOSED) {
     ws.close();
   }
-  let settings = readLscSettings();
+  let settings = loadSettings();
   ws = new WebSocket(`ws://${settings.server.ip}:${settings.server.port}`);
 
   ws.onopen = function () {
@@ -95,21 +96,14 @@ function setupClient() {
     updateServerStatus("CLOSED");
   };
 }
-//! change func name
-function main() {
-  let videoElement = getVideoElement();
-  let caption = new Caption("This is a caption", "24px", "rgba(0, 0, 0, 0.5)", "white");
-  caption.attachToVideo(videoElement);
-  console.log("Live Stream Caption: Caption added");
-}
 
 function saveSettings(settings) {
   let savedValue = GM_getValue("lscSettings");
   if (savedValue) {
     let dict = JSON.parse(savedValue);
+    dict["asr"][url] = settings["asr"];
     dict["caption"] = settings["caption"];
     dict["server"] = settings["server"];
-    dict["asr"][url] = settings["asr"];
     GM_setValue("lscSettings", JSON.stringify(dict));
   } else {
     settings["asr"] = { [url]: settings["asr"] };
@@ -122,12 +116,11 @@ function loadSettings() {
   if (savedValue) {
     let dict = JSON.parse(savedValue);
     if (dict["asr"] && dict["asr"][url]) {
-      return dict;
+      return { asr: dict["asr"][url], caption: dict["caption"], server: dict["server"] };
     }
   } else {
-    GM_setValue("lscSettings", JSON.stringify(defaultSettings));
+    return defaultSettings;
   }
-  return null;
 }
 
 function setupSettingsMenu() {
@@ -138,8 +131,7 @@ function setupSettingsMenu() {
   inputElements.forEach(function (element) {
     if (element.id) {
       element.addEventListener("change", function () {
-        let settings = readLscSettings();
-        GM_setValue("lscSettings", JSON.stringify(settings));
+        saveSettings(readLscSettings());
         console.log("Settings saved");
       });
       // setup server connection
@@ -160,12 +152,7 @@ function setupSettingsMenu() {
   stopAsrButton.addEventListener("click", wsStopAsr);
 
   // load settings
-  let savedValue = GM_getValue("lscSettings");
-  if (savedValue) {
-    writeLscSettings(JSON.parse(savedValue));
-  } else {
-    GM_setValue("lscSettings", JSON.stringify(defaultSettings));
-  }
+  writeLscSettings(loadSettings());
 }
 
 function setupCaption() {
@@ -176,9 +163,9 @@ function setupCaption() {
     if (getVideoElement()) {
       console.log("VideoElement ready after", elemSearchCount, "tries");
       clearInterval(elemTimer);
-      main();
+      addCaption(getVideoElement(), loadSettings().caption);
     } else if (elemSearchCount >= maxRetry) {
-      console.log("VideoElement Searching failed after", elemSearchCount, "tries");
+      console.log("VideoElement searching failed after", elemSearchCount, "tries");
       clearInterval(elemTimer);
     }
   }, 500);

@@ -81,16 +81,16 @@ var settingsHtml = `
     <input type="color" id="font_color" />
   </div>
   <div>
-    <label for="font_transparency">font_transparency:</label>
-    <input type="range" id="font_transparency" min="0" max="1" step="0.1" />
+    <label for="font_alpha">font_alpha:</label>
+    <input type="range" id="font_alpha" min="0" max="1" step="0.1" />
   </div>
   <div>
     <label for="background_color">background_color:</label>
     <input type="color" id="background_color" />
   </div>
   <div>
-    <label for="background_transparency">background_transparency:</label>
-    <input type="range" id="background_transparency" min="0" max="1" step="0.1" />
+    <label for="background_alpha">background_alpha:</label>
+    <input type="range" id="background_alpha" min="0" max="1" step="0.1" />
   </div>
 </div>
 <div id="lsc-settings-server">
@@ -175,9 +175,9 @@ var defaultSettings = {
     font: "Arial",
     font_size: 20,
     font_color: "#FFFFFF",
-    font_transparency: 1,
+    font_alpha: 1,
     background_color: "#000000",
-    background_transparency: 1,
+    background_alpha: 1,
   },
   server: {
     ip: "localhost",
@@ -292,11 +292,11 @@ function addLscSettingsElement() {
   });
 
   // add input listeners
-  let fontTransparencyInput = document.getElementById("font_transparency");
+  let fontTransparencyInput = document.getElementById("font_alpha");
   fontTransparencyInput.addEventListener("input", function () {
     this.title = this.value;
   });
-  let backgroundTransparencyInput = document.getElementById("background_transparency");
+  let backgroundTransparencyInput = document.getElementById("background_alpha");
   backgroundTransparencyInput.addEventListener("input", function () {
     this.title = this.value;
   });

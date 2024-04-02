@@ -84,4 +84,19 @@ class Caption {
   }
 }
 
+function addCaption(videoElem, captionSettings) {
+  let caption = new Caption(
+    captionSettings.text,
+    captionSettings.font,
+    captionSettings.fontSize,
+    captionSettings.fontColor,
+    captionSettings.fontAlpha,
+    captionSettings.backgroundColor,
+    captionSettings.backgroundAlpha
+  );
+  caption.attachToVideo(videoElem);
+  console.log("Caption added");
+}
+
 window.Caption = Caption;
+window.addCaption = addCaption;
