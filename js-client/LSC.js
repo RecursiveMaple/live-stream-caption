@@ -171,9 +171,11 @@ function setupCaption() {
       console.debug("VideoElement ready after", elemSearchCount, "tries");
       clearInterval(elemTimer);
       if (caption) {
-        caption.element.remove();
+        caption.updateStyle(loadSettings().caption);
+        caption.pushText(caption.defaultText);
+      } else {
+        caption = addCaption(getVideoElement(), loadSettings().caption);
       }
-      caption = addCaption(getVideoElement(), loadSettings().caption);
     } else if (elemSearchCount >= maxRetry) {
       console.debug("VideoElement searching failed after", elemSearchCount, "tries");
       clearInterval(elemTimer);
