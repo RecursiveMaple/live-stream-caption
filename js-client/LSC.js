@@ -1,9 +1,12 @@
 // ==UserScript==
 // @name         Live Stream Caption
 // @namespace    https://github.com/RecursiveMaple/live-stream-caption
-// @version      2024-03-28
+// @version      0.1
 // @description  Frontend of live-stream-caption.
 // @author       RecursiveMaple
+// @license      MIT
+// @updateURL    https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/LSC.js
+// @downloadURL  https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/LSC.js
 // @match        https://www.twitch.tv/*
 // @match        https://live.bilibili.com/*
 // @icon         https://raw.githubusercontent.com/RecursiveMaple/live-stream-caption/master/js-client/icon.png
